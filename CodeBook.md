@@ -1,22 +1,44 @@
 # Getting and Cleaning Data Course Project
 
+The present code book describes the behavior of the script "run_analysis.R".  
+
 ## Raw data source
 
 Data collected from the accelerometers from the Samsung Galaxy S smartphone. A full description is available at the site where the data was obtained:
 
 http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones
 
-The zip file containing all the data can be obtained through the following link:
+The zip file containing all the data can be downloaded through the following link:
 
 https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip 
 
 ## Data transformation
 
-Running the script "run_analysis.R" on the raw data will produce a tidy data set which will be printed in the file cleaned_data.txt  
+Running the script "run_analysis.R" on the raw data will produce a tidy data set which will be printed in the file "cleaned_data.txt". The script successively performs the following transformations on the data:
+
+### Merge training and test sets
+
+The script creates a single data set by merging the test and training data sets loaded from the couples of files ("X_train.txt", "X_test.txt"), ("subject_train.txt", "subject_test.txt"), and ("y_train.txt", "y_test.txt"). Variables from the first couple are labelled according to the content of the file "features.txt" while the two columns resulting from the second and third couples are respectively named "Subject" and "ActivityId".
+
+### Extract mean and standard deviation variables
+
+The script then creates a new data set from the previous one by keeping only the variables "Subject", "ActivityId", and any variable whose name ends with either the keywords "mean" or "std".
+
+### Use descriptive activity names
+
+A new column "Activity" is added to the intermediate data set with the activity description. The column "ActivityId" is used to look up descriptions from the file "activity_labels.txt". The column "ActivityId" is then removed from the current data set.
+
+### Label variables appropriately
+
+The script changes some of the labels from the raw data to ensure only valid R variable names are used (without parentheses, dashes or commas). The name of a few columns is also altered so as to make them clearer. 
+
+### Create a tidy data set
+
+At this point the column "Activity" refers to one of the six possible activities among "WALKING", "WALKING_UPSTAIRS", "WALKING_DOWNSTAIRS", "SITTING", "STANDING, LAYING" while the column "Subject" indicates the subject id. The script then computes the mean of each numeric variable over each couple (Activity, Subject) in the data set. 
 
 ## Description of the tidy data set
 
-The data set stored in the file cleaned_data.txt contains 180 obervations and 68 variables. 
+The data set stored in the file "cleaned_data.txt" contains 180 obervations and 68 variables. 
 
 1. "Subject"
 2. "Activity"
